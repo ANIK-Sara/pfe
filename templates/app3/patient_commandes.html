@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Document</title>
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+body{
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+}
+.container{
+   width: 900px;
+   max-width: 90vw;
+   margin: auto;
+   text-align: center;
+   padding-top: 10px;
+   transition: transform .5s;
+}
+svg{
+    width: 30px;
+}
+header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+}
+header .icon-cart{
+    position: relative ;
+    margin-right: 300px;
+    
+}
+header .icon-cart span {
+    display : flex; 
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    justify-content: center;
+    align-items: center;
+    color: #fff; 
+    border-radius: 50%;
+    position: absolute;
+    top: 50% ; 
+    right: -10px ;
+}
+.listproduct .item img{
+   width: 90%;
+   filter : drop-shadow(0 50px 20px #0009) ;
+
+}
+.listproduct {
+    display: grid ; 
+    grid-template-columns : repeat(4 , 1fr) ;
+    gap : 20px ; 
+}
+.listproduct .item {
+background-color: #eeeee6;
+padding: 20px;
+border-radius: 20px;
+}
+.listproduct .item h2{
+    font-weight: 500;
+    font-size: large;
+
+}
+.listproduct .item .price {
+    letter-spacing: 7px ;
+    font-size: small;
+
+}
+
+.listproduct .item button{
+    background-color: #353432;
+    color : #eee ; 
+    padding : 5px 10px ; 
+    border-radius : 20px ; 
+    margin-top : 10px ; 
+    border : none ;
+    cursor : pointer ; 
+}
+.cartTab{
+    width: 400px;
+    background-color: #353432;
+    color: #eee;
+    position: fixed; 
+    inset: 0 -400px 0 auto ; 
+    display : grid ;
+    grid-template-rows : 70px 1fr 70px;
+    transition: .5s;
+
+}
+body.showCart .cartTab{
+    inset: 0 0  0 auto ; 
+}
+body .showCart .container {
+    transform : translateX(-250px);
+}
+
+.cartTab h1{
+    padding: 20px;
+    margin : 0;
+    font-weight: 300;
+}
+.cartTab .btn{
+    display: grid;
+    grid-template-columns: repeat(2 , 1fr);
+}
+.cartTab .btn button {
+    background-color:blue;
+    border: none;
+    font-family: Poppins;
+    font-weight: 500;
+    cursor : pointer ;
+}
+.cartTab .btn .close{
+    background-color: #eee;
+}
+.cartTab .listCart .item img{
+    width: 100%;
+
+}
+.cartTab .listCart .item{
+    display: grid;
+    grid-template-columns: 70px 150px 50px 1fr;
+    gap: 10px ;
+    text-align: center;
+    align-items: center;
+}
+
+.listCart .quantity span{
+    display: inline-block ;
+    width: 25px;
+    height: 25px;
+    background-color: #eee;
+    color : #555 ;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.listCart .quantity span:nth-child(2){
+    background-color: transparent;
+    color:#eee;
+}
+.listCart .item:nth-child(even){
+    background-color: #eee1;
+}
+
+.listCart{
+    overflow: auto;
+}
+.listCart::-webkit-scrollbar{
+    width:0;
+}
+@media screen and (max-width : 992px){
+    .listproduct{
+        grid-template-columns: repeat(3 , 1fr);
+    }
+}
+
+
+    </style>
+</head>
+<body   >
+   
+    <div  class="container">
+        <header>
+         <div class="title" >  La liste des produits              </div>
+         <div class="icon-cart">       
+            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312"/>
+              </svg>
+     <span>0</span>              
+        </div>
+</header>
+
+<div class="listproduct">
+    {% for produit in produits %}
+
+<div class="item"  data-id="{{ produit.id }}">
+    <img src="{{ produit.image.url }}" alt="">
+        <h2>{{ produit.nom_pr }}</h2>
+        <div class="price">${{ produit.prix_unitaire }}</div>
+    <button  class="addCart"   >
+        add to cart 
+    </button>
+</div>
+{% endfor %}
+
+</div>
+</div>
+<div class="cartTab">
+    <h1>shopping cart</h1>
+    <div class="listCart">
+        {% for produit in produits %}
+        <div class="item" data-id="{{ produit.id }}">
+            <div class="image"><img src="{{ produit.image.url }}" alt=""></div>
+            <div class="name">{{ produit.nom_pr }}</div>
+            <div class="totalPrice">${{ produit.prix_unitaire }}</div>
+            <div class="quantity">
+                <span class="minus"> < </span>
+                <span>1</span> <!-- Vous pouvez remplacer cela par la quantité du produit -->
+                <span class="plus">></span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div  class="btn">
+<button class="close">  close </button>
+<button  class="checkOut"> Check out   </button>
+    </div>
+
+</div>
+
+
+<script>
+    
+ // Sélection des éléments du DOM
+let iconCart = document.querySelector('.icon-cart');
+let closeCart = document.querySelector('.close');
+let body = document.querySelector('body');
+let listProductHTML = document.querySelector('.listproduct');
+let listCartHTML = document.querySelector('.listCart');
+let iconCartSpan = document.querySelector('.icon-cart span');
+let carts = [];
+
+// Ajout de l'écouteur d'événement pour ouvrir/fermer le panier
+iconCart.addEventListener('click', () => {
+    body.classList.toggle('showCart')
+});
+closeCart.addEventListener('click', () => {
+    body.classList.toggle('showCart')
+});
+
+// Fonction pour ajouter les données des produits au HTML
+const addDataToHTML = (produits) => {
+    listProductHTML.innerHTML = '';
+    produits.forEach(produit => {
+        let newProduct = document.createElement('div');
+        newProduct.classList.add('item');
+        newProduct.dataset.id = produit.id;
+        newProduct.innerHTML = `
+            <img src="${produit.image}" alt="">
+            <h2>${produit.nom_pr}</h2> 
+            <div class="price">$${produit.prix_unitaire}</div>
+            <button class="addCart">Add to cart</button>
+        `;
+        listProductHTML.appendChild(newProduct);
+    });
+};
+
+// Fonction pour récupérer les produits depuis le serveur
+const fetchProducts = () => {
+    fetch('/get_products')
+        .then(response => response.json())
+        .then(data => {
+            addDataToHTML(data); // Ajout des données au HTML
+        })
+        .catch(error => {
+            console.error('Une erreur s\'est produite lors de la récupération des produits:', error);
+        });
+}
+
+// Fonction pour ajouter un produit au panier
+const addToCart = (product_id) => {
+    let positionThisProductInCart = carts.findIndex((value) => value.product_id == product_id);
+    if (carts.length <= 0) {
+        carts = [{
+            product_id: product_id,
+            quantity: 1
+        }]
+    } else if (positionThisProductInCart < 0) {
+        carts.push({
+            product_id: product_id,
+            quantity: 1
+        });
+    } else {
+        carts[positionThisProductInCart].quantity = carts[positionThisProductInCart].quantity + 1;
+    }
+
+    addCartToHTML();
+    addCartToMemory();
+}
+
+// Fonction pour modifier la quantité d'un produit dans le panier
+const changeQuantity = (product_id, type) => {
+    let positionItemInCart = carts.findIndex((value) => value.product_id == product_id);
+    if (positionItemInCart >= 0) {
+        switch (type) {
+            case 'plus':
+                carts[positionItemInCart].quantity = carts[positionItemInCart].quantity + 1;
+                break;
+            default:
+                let valueChange = carts[positionItemInCart].quantity - 1;
+                if (valueChange > 0) {
+                    carts[positionItemInCart].quantity = valueChange;
+                } else {
+                    carts.splice(positionItemInCart, 1);
+                }
+                break;
+        }
+    }
+    addCartToMemory();
+    addCartToHTML();
+}
+
+// Fonction pour sauvegarder le panier dans le stockage local
+const addCartToMemory = () => {
+    localStorage.setItem('cart', JSON.stringify(carts));
+}
+
+// Fonction pour initialiser le panier depuis le stockage local
+const initApp = () => {
+    if (localStorage.getItem('cart')) {
+        carts = JSON.parse(localStorage.getItem('cart'));
+        addCartToHTML();
+    }
+}
+
+// Fonction pour ajouter les produits du panier au HTML
+const addCartToHTML = () => {
+    listCartHTML.innerHTML = '';
+    let totalQuantity = 0;
+    if (carts.length > 0) {
+        carts.forEach(cart => {
+            totalQuantity += cart.quantity;
+            let newCart = document.createElement('div');
+            newCart.classList.add('item');
+            newCart.dataset.id = cart.product_id;
+            newCart.innerHTML = `
+                <div class="image">
+                    <img src="${cart.image}" alt="">
+                </div>
+                <div class="name">${cart.name}</div>
+                <div class="totalPrice">$${cart.price * cart.quantity}</div>
+                <div class="quantity" data-id="${cart.product_id}">
+                    <span class="minus"><</span>
+                    <span>${cart.quantity}</span>
+                    <span class="plus">></span>
+                </div>
+            `;
+            listCartHTML.appendChild(newCart);
+        })
+    }
+    iconCartSpan.innerText = totalQuantity;
+}
+
+// Ajout des écouteurs d'événements pour les boutons "Add to cart"
+listProductHTML.addEventListener('click', (event) => {
+    let positionClick = event.target;
+    if (positionClick.classList.contains('addCart')) {
+        let product_id = positionClick.parentElement.dataset.id;
+        addToCart(product_id);
+    }
+});
+
+// Ajout des écouteurs d'événements
+
+listCartHTML.addEventListener('click', (event) => {
+    let positionClick = event.target;
+    if (positionClick.classList.contains('minus') || positionClick.classList.contains('plus')) {
+        let product_id = positionClick.parentElement.dataset.id;
+        let type = 'minus';
+        if (positionClick.classList.contains('plus')) {
+            type = 'plus';
+        }
+        changeQuantity(product_id, type);
+    }
+});
+
+</script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css'  %} ">
+
+
+    <title>Document</title>
+    <style>
+        /* Style pour la fenêtre modale */
+        .modal {
+            display: none; /* Par défaut, la fenêtre modale est cachée */
+            position: fixed;
+            z-index: 1; /* Permet de positionner la fenêtre modale au-dessus de tout le reste */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4); /* Opacité de 40% */
+            padding-top: 60px; /* Marge au-dessus pour laisser de l'espace pour le titre */
+        }
+
+        /* Style pour le contenu de la fenêtre modale */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Largeur du contenu */
+        }
+
+        /* Style pour le bouton de fermeture */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    
+
+    </style>
+</head>
+<body>
+    <div class="topnav" style="display: flex; align-items: center; ">
+        <a class="active" href="#home" style="margin-left: 20px;background-color: #333 ;"> Accueil</a>
+        <a href="#about" style="margin-left: 20px;">À propos de nous</a>
+        <a href="#contact" style="margin-left: 20px;">Contactez-nous</a>
+        <div class="language-select" style="margin-right: 30px; margin-left: 50px;">
+            <select id="language" onchange="changeLanguage()">
+                <option value="fr">Français</option>
+                <option value="en">Anglais</option>
+                <option value="ar">Arabe</option>
+            </select>
+        </div>
+        
+        <button onclick="document.getElementById('id02').style.display='block'"
+            style="width: 150px; margin-left: 450px; background-color: #333 ; color: white;"><h2>Profil </h2></button>
+    </div>
+
+    <div>
+        <br><br><br>
+        <div style="display: flex; justify-content: space-between; ">
+            <div class="Pharmacies" style="width: 250px; height: 150px; border: 1px solid #ddd; margin: 80px; border-radius: 10px; background: rgb(0, 85, 255);">
+                <div>
+                    <div style="display: flex; justify-content: center;">
+                        <i class="fas fa-capsules" style="font-size: 50px;"></i>
+    
+                    </div>
+                    <br>
+                    <p style="color: white; margin-left: 10px; text-align: center;">Les produits en rupture   </p> <br>
+                    <a href="http://127.0.0.1:8000/patient_commandes" style="color: white; text-decoration: none; display: block; margin-left: 70px;">Accéder</a>
+                </div>
+            </div>
+            
+            <div class="Pharmacies" style="width: 250px; height: 150px; border: 1px solid #ddd; margin: 80px; border-radius: 10px; background: rgb(0, 85, 255);">
+                <div>
+                    <div style="display: flex; justify-content: center;">
+                        <i class="fas fa-prescription-bottle" style="font-size: 50px;"></i>
+    
+                    </div>
+                    <br>
+                    <p style="color: white; margin-left: 10px; text-align: center;">Etablir une ordonnaces   </p> <br>
+                    <!-- Ajoutez un identifiant unique à ce lien -->
+                    <a href="javascript:void(0);" onclick="displayPatientNameModal()" id="etablirOrdonnanceLink" style="color: white; text-decoration: none; display: block; margin-left: 70px;">Accéder</a>
+
+                </div>
+            </div>
+            
+        
+            <div class="médecins" style="width: 250px; height: 150px; border: 1px solid #ddd; margin: 80px; border-radius: 10px; background: rgb(0, 85, 255);">
+                <div>
+                    <div style="display: flex; justify-content: center;">
+                        <i class="fas fa-history" style="font-size: 50px;"></i>
+    
+                    </div>
+                    <br>
+                    <p style="color: white; margin-left: 10px; text-align: center;">Consulter historique</p><br>
+                    <a href="http://127.0.0.1:8000/medecins/" style="color: white; text-decoration: none; display: block; margin-left: 70px;">Accéder</a>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+    
+    <!-- Ajoutez votre fenêtre modale ici -->
+    <div id="id01" class="modal" >
+        
+        <!-- Contenu de la fenêtre modale -->
+        <div class="modal-content">
+            <!-- Bouton de fermeture -->
+            <div class="modal-content" style="background-color: white; display: flex; flex-direction: column; ">
+                <nav style="background-color: blue; height: 40px;"> <h1 style="text-align: center;">Ordonnance</h1></nav>
+                <span class="close" onclick="document.getElementById('id01').style.display='none'" style="position: absolute; top: 85px; right: 95px; font-size: 50px; cursor: pointer; ">&times;</span>
+
+            <!-- Contenu du formulaire -->
+          
+            <div id="currentDate"></div>
+            <form  method="POST" id="ordonnanceForm">
+                {% csrf_token %}
+              
+                <label for="doctorName">Nom du Médecin :</label>
+                <input type="text" id="doctorName" name="doctorName" required><br><br>
+
+                <label for="specialty">Spécialité :</label>
+                <input type="text" id="specialty" name="specialty" required><br><br>
+
+                <label for="hospital">Adresse du Cabinet :</label>
+                <input type="text" id="hospital" name="hospital" required><br><br>
+
+                <label for="patientName">Nom du Patient :</label>
+                <input type="text" id="patientName" name="patientName" required><br><br>
+                <label for="patientfirstname">Nom du Patient :</label>
+                <input type="text" id="patientfirstname" name="patientfirstname" required><br><br>
+              
+
+                <label for="phoneNumber">Téléphone du Patient :</label>
+                <input type="tel" id="phoneNumber" name="phoneNumber" required><br><br>
+
+               
+
+                <label for="medicinesList">Liste des Médicaments :</label>
+                <textarea id="medicinesList" name="medicinesList" rows="4" required></textarea><br><br>
+
+                <button type="submit"> Valider</button>
+ 
+            </form>
+           
+        </div>
+    </div>
+
+    <script>
+           function displayPatientNameModal() {
+    document.getElementById('id01').style.display = 'block';
+    // Récupérer la date actuelle
+    var today = new Date();
+
+    // Formater la date au format 'jour/mois/année'
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); // Janvier est 0 !
+    var yyyy = today.getFullYear();
+
+    today = dd + '/' + mm + '/' + yyyy;
+
+    // Ajouter la date au champ correspondant dans le formulaire
+    document.getElementById('currentDate').textContent = today;
+
+    // Attacher l'écouteur d'événement au formulaire
+    document.addEventListener("DOMContentLoaded", function(event) {
+        document.getElementById('ordonnanceForm').addEventListener('submit', function(event) {
+            // Cacher la fenêtre modale après la soumission du formulaire
+            document.getElementById('id01').style.display = 'none';
+            console.log("faut que ça marche");
+        });
+    });
+
+}
+    </script>
+    
+
+<br><br><br><br><br><br><br><br><br><br>
+{% include 'app3/footer.html' %}
+
+</body>
+</html>

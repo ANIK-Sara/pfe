@@ -1,0 +1,63 @@
+ [
+
+   {
+    "id":1,
+    "name": "LLD01 LOUNGE CHAIR",
+    "price": 200,
+    "image": "/static/image/fauteille_.jpg"
+
+   },
+   {
+    "id":2,
+    "name": "LLD01 LOUNGE CHAIR",
+    "price": 200,
+    "image": "/static/image/fauteille_.jpg"
+
+   },
+   {
+    "id":3,
+    "name": "LLD01 LOUNGE CHAIR",
+    "price": 200,
+    "image": "/static/image/fauteille_.jpg"
+
+   },
+   {
+    "id":4,
+    "name": "LLD01 LOUNGE CHAIR",
+    "price": 200,
+    "image": "/static/image/fauteille_.jpg"
+
+   },
+   {
+    "id":5,
+    "name": "LLD01 LOUNGE CHAIR",
+    "price": 200,
+    "image": "/static/image/fauteille_.jpg"
+
+   },
+   {
+    "id":6,
+    "name": "LLD01 LOUNGE CHAIR",
+    "price": 200,
+    "image": "/static/image/fauteille_.jpg"
+
+   },
+   {
+    "id":7,
+    "name": "LLD01 LOUNGE CHAIR",
+    "price": 200,
+    "image": "/static/image/fauteille_.jpg"
+
+   },
+   {
+    "id":8,
+    "name": "LLD01 LOUNGE CHAIR",
+    "price": 200,
+    "image": "/static/image/fauteille_.jpg"
+
+   }
+
+
+
+
+ ]

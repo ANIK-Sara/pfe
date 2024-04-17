@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css'  %} ">
+
+    <title>Document</title>
+    <style>
+        table {
+            width: 50%;
+            margin: 0 auto; /* Centrer le tableau */
+            border-collapse: collapse; /* Fusionner les bordures des cellules */
+        }
+
+        th, td {
+            border: 1px solid #dddddd; /* Ajouter une bordure à chaque cellule */
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2; /* Couleur de fond pour la ligne d'en-tête */
+        }
+        .mySlides {
+    display: none;
+}
+.fade {
+    animation: fadeEffect 6s linear infinite;
+}
+@keyframes fadeEffect {
+    
+    0%, 100% { opacity: 0; }
+    10%, 90% { opacity: 1; }
+
+
+}
+.slide-content {
+    display: flex;
+}
+
+.description {
+    margin-left: 20px; /* Espace entre l'image et la description */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    text-align: center;
+    background: linear-gradient(to bottom, gainsboro, rgba(255, 255, 255, 0.8));
+}
+
+
+    </style>
+</head>
+<body>
+    <div class="topnav" style="display: flex; align-items: center;">
+        <a class="active" href="#home" style="margin-left: 20px;  background-color: #333 ;">Accueil</a>
+        <a href="#about" style="margin-left: 20px;">À propos de nous</a>
+        <a href="#contact" style="margin-left: 20px;">Contactez-nous</a>
+        
+        <div class="language-select" style="margin-right: 30px;">
+            <select id="language" onchange="changeLanguage()">
+                <option value="fr">Français</option>
+                <option value="en">Anglais</option>
+                <option value="ar">Arabe</option>
+            </select>
+        </div>
+        <form id="search-form" style="margin-left: auto; margin-right: 20px; display: flex;">
+            <input type="text" placeholder="Rechercher une pharmacie par nom ou par adresse..." name="search"
+             id="search-input" 
+            style=" width: 370px;">
+            <button type="submit" id="search-button" style="height: auto; padding: 6px 10px; width: 100px; background-color:  #008b8b; color:white ;">Rechercher</button>
+        </form>
+        
+        
+        </div>
+
+    <div class="slideshow-container">
+        <div class="mySlides fade">
+            <div class="slide-content">
+                <img src="{% static 'image/phama12.jpg' %}" style="width:500px; height:260px;">
+                <div class="description">
+                    <h1>Trouvez rapidement la pharmacie la plus proche et consultez ses détails en un seul clic. </h1>
+                </div>
+            </div>
+        </div>
+    </div> <div class="slideshow-container">
+        <div class="mySlides fade">
+            <div class="slide-content">
+                <img src="{% static 'image/pharmacien.jpg' %}" style="width:510px; height:260px;">
+                <div class="description">
+                    <h1>Notre application offre une expérience conviviale pour commander vos médicaments en ligne.</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="slideshow-container">
+        <div class="mySlides fade">
+            <div class="slide-content">
+                <img src="{% static 'image/-pharmacist-photo.jpg' %}" style="width:500px; height:260px;">
+                <div class="description">
+                <h1>Avec notre service de livraison, 
+                    vous pouvez recevoir vos médicaments</h1>
+               
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+        <script>
+            let slideIndex = 0;
+showSlides();
+
+function showSlides() {
+    let i;
+    let slides = document.getElementsByClassName("mySlides");
+    for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";  
+    }
+    slideIndex++;
+    if (slideIndex > slides.length) {
+        slideIndex = 1;  
+    }
+    slides[slideIndex - 1].style.display = "block";  
+    setTimeout(showSlides, 6000); // Change image every 5 seconds
+}
+        </script>
+  <br><br><br><br><br><br><br><br><br>
+  <table>
+    <thead>
+        <tr>
+            <th colspan="4" style="text-align: center; background-color: #008b8b; color: white;">Pharmacies</th>
+        </tr>
+        <tr>
+            <th>Nom</th>
+            <th>Adresse</th>
+            <th>Heure d'ouverture</th>
+            <th>Heure de fermeture</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for x in pharma %}
+        <tr id="pharma_{{ x.id_pharmacie }}" class="pharma-row">
+            <td><a href="{% url 'pharmacie_details' pharmacie_id=x.id_pharmacie %}" >{{ x.nom }}</a></td>
+            <td>{{ x.adresse }}</td>
+            <td>{{ x.heure_ouverture }}</td>
+            <td>{{ x.heure_fermeture }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const pharmaRows = document.querySelectorAll(".pharma-row");
+        pharmaRows.forEach(row => {
+            row.addEventListener("click", function() {
+                const pharmaId = this.id.split("_")[1]; // Obtenez l'ID de la pharmacie à partir de l'ID de la ligne
+                fetch('/get_pharmacie_details/' + pharmaId)
+
+                .then(response => response.json())
+                .then(data => {
+                    // Rediriger vers un autre template avec les détails de la pharmacie
+                    window.location.href = 'http://127.0.0.1:8000/pharmacies_details/' + pharmaId;
+
+                })
+                .catch(error => console.error('Erreur:', error));
+            });
+        });
+    });
+    document.getElementById("search-form").addEventListener("submit", function(event) {
+    event.preventDefault(); // Empêche le comportement par défaut du formulaire (rechargement de la page)
+    searchPharmacies();
+});
+
+
+function searchPharmacies() {
+    const searchString = document.getElementById('search-input').value.toLowerCase();
+
+    const pharmaRows = document.querySelectorAll(".pharma-row");
+
+    pharmaRows.forEach(row => {
+        const nomCell = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+        const adresseCell = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+
+        if (nomCell.includes(searchString) || adresseCell.includes(searchString)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+    </script>
+<br><br><br><br><br><br>
+{% include 'app3/footer.html' %}
+</body>
+</html>

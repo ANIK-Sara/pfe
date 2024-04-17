@@ -1,0 +1,152 @@
+{% extends "app3/base.html"    %}
+
+{%  block content   %}
+<div class="row">
+    <div class="col-md-12">
+        <ul class="list-group"  id="item-list">
+          <br><br>
+            <h3 class="text-center">Voici votre liste de produits </h3> <br>
+          
+        </ul>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+      <br><br>
+      <h3 style="margin-left: 50px;">Veuillez remplir ce forumalaire pour valider votre commande </h3>
+      <br>
+        <form  method="post" >
+            {% csrf_token  %}
+            <input type="hidden" id="items" , name="items">
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputEmail4">Nom</label>
+                <input type="text" id="nom" name="nom"  class="form-control" id="inputEmail4" placeholder="Entrer votre nom">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputEmail4">Prénom</label>
+                <input type="text" id="prenom" name="prenom"  class="form-control" id="inputEmail4" placeholder="Entrer votre prénom">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputPassword4">Email</label>
+                <input type="email" id="email" name="email"  class="form-control" id="inputPassword4" placeholder="Entrer votre email"
+                style="height: 50px; margin-top: 10px;">
+              </div> 
+              <div class="form-group col-md-6">
+                <label for="inputAddress">Numéro de téléphone </label> 
+              <input type="text" name="tel" id="tel"    class="form-control" id="inputAddress" placeholder="Entrer votre numéro de téléphone"
+          style="margin-bottom: 20px;">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputAddress">Addresse</label> <br>
+              <input type="text"  name="address" id="address" class="form-control" id="inputAddress" placeholder="Entrer votre adresse"
+              style="width: 600px;">
+            </div>
+           
+            <div class="form-row">
+              
+              <div class="form-group col-md-4">
+                <label for="inputState">Ville</label>
+                <select id="ville"  name="ville"  class="form-control">
+                  <option selected>Alger</option>
+                  <option>Constantine</option>
+                  <option>Oran</option>
+                  <option>Annaba</option>
+
+
+                </select>
+              </div>
+               
+              <div class="form-group col-md-2">
+                <label for="inputZip">Somme total à payer </label>
+                <input type="readonly" name="total" id="total" class=" bg-dark text-warning form-control" >
+              </div> 
+            </div>
+              
+            </div>
+            <div class="form-group">
+             
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 250px; background-color: blue;">Commander</button>
+          </form>
+    </div>
+</div> <br><br><br>
+{% include 'app3/footer.html' %}
+
+{% endblock  %}
+
+{%  block js  %}
+<script type="text/javascript">
+if(localStorage.getItem('panier')==null){
+    var panier = {};
+}else{
+    panier = JSON.parse(localStorage.getItem('panier'));
+}
+var total = 0 ; 
+var nombre = 0 ; 
+for(item in panier){
+    let nom = panier[item][1];
+    let quantité = panier[item][0] ;
+    let prix = panier[item][2] 
+    nombre += quantité ; 
+    total += prix ; 
+    let itemString = `  <li class="list-group-item d-flex justify-content-between align-items-center">
+              ${nom}
+              <div class="quantity">
+                  <span class="minus">-</span>
+                  <span class="badge badge-primary badge-pill">Qte ${quantité}</span>
+                  <span class="plus">+</span>
+              </div>
+              <span class="badge badge-warning badge-pill"> ${prix} DA</span>
+            </li>`;
+            $('#item-list').append(itemString);
+
+}
+let itemNombre = `  <li class="list-group-item d-flex justify-content-between align-items-center">
+              <b  class="bg-danger" > PRIX ET QUANTITE TOTAL   </b>
+              <span class="badge badge-danger badge-pill">TQte: ${nombre}</span>
+              <span class="badge badge-danger badge-pill"> Total: ${total} DA</span>
+            </li>`;
+            $('#item-list').append(itemNombre);
+$('#items').val(JSON.stringify(panier));
+$('#total').val(total +" DA");
+
+// Fonction pour mettre à jour les quantités et le total
+function updateTotalAndQuantity() {
+    total = 0;
+    nombre = 0;
+    $('#item-list .quantity').each(function() {
+        var quantite = parseInt($(this).find('.badge-primary').text().split(' ')[1]);
+        var prix = parseFloat($(this).siblings('.badge-warning').text().split(' ')[1]);
+        total += quantite * prix;
+        nombre += quantite;
+    });
+    $('.badge-danger:eq(0)').text('TQte: ' + nombre);
+    $('.badge-danger:eq(1)').text('Total: ' + total + ' DA');
+    $('#total').val(total + " DA");
+}
+
+// Gestion des clics sur les boutons "+" et "-"
+$('.quantity .plus').click(function() {
+    var $quantity = $(this).siblings('.badge-primary');
+    var currentVal = parseInt($quantity.text().split(' ')[1]);
+    if (!isNaN(currentVal)) {
+        var newQuantity = currentVal + 1;
+        $quantity.text('Qte ' + newQuantity);
+        updateTotalAndQuantity();
+    }
+});
+
+$('.quantity .minus').click(function() {
+    var $quantity = $(this).siblings('.badge-primary');
+    var currentVal = parseInt($quantity.text().split(' ')[1]);
+    if (!isNaN(currentVal) && currentVal > 0) {
+        var newQuantity = currentVal - 1;
+        $quantity.text('Qte ' + newQuantity);
+        updateTotalAndQuantity();
+    }
+});
+</script>
+{%  endblock    %}

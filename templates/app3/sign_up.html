@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="{% static 'css/login.css'  %}">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: white;
+            /* Couleur de fond pour tout le corps */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="topnav" style="position: absolute; top: 0; left: 0; width: 100%;">
+            <a class="" href="http://127.0.0.1:8000/">Accueil</a>
+            <a href="#about" style="margin-left:  100px;">à propos de nous</a>
+            <a href="#contact" style="margin-left:  100px;">Contactez-nous</a>
+            <br>
+            <div class="language-select" style="margin-right: 300px; margin-left:  100px;">
+                <select id="language" onchange="changeLanguage()" style="margin-left:  100px;">
+                    <option value="fr">Français</option>
+                    <option value="en">Anglais</option>
+                    <option value="ar">Arabe</option>
+                </select>
+            </div>
+
+           
+        </div>
+        <br> <br>
+        <div style="background-color: white"> <!-- Seule cette partie aura un arrière-plan de couleur gainsboro -->
+            <form action="{% url 'inscription' %}" method="post">
+                {% csrf_token %}
+                <h1 style="text-align: center; color: blue;">Formulaire d'inscription</h1>
+                <i class="fa fa-user icon"></i>
+                <label for="nom"><b>Nom d'utilisateur</b></label>
+                <input type="text" placeholder="veuillez saisir votre nom" name="nom" value="{{ nom }}">
+                {% if error_message %}
+                <p style="color: red;">{{ error_message|safe }}</p>
+                {% endif %}
+
+                <i class="fa fa-user icon"></i>
+                <label for="prenom"><b>Prénom d'utilisateur</b></label>
+                <input type="text" placeholder="veuillez saisir votre prénom" name="prenom" value="{{ prenom }}">
+                <i class="fa fa-key icon"></i>
+                <label for="psww"><b>Mot de passe</b></label>
+                <input type="password" placeholder="veuillez saisir votre mot de passe" name="psww" value="{{ psww }}">
+                <i class="fa fa-envelope icon"></i>
+                <label for="mail"><b>Adresse mail</b></label> <br>
+                <input type="text" placeholder="veuillez saisir l'adresse mail" name="mail" value="{{ mail }}"> <br>
+                <i class="fa fa-phone icon"></i>
+                <label for="tel"><b>Numéro de téléphone</b></label>
+                <input type="text" placeholder="veuillez saisir votre numéro de téléphone" name="tel" value="{{ tel }}">
+                <i class="fa fa-calendar icon"></i>
+                <label for="date"><b>Date de naissance</b></label>
+                <input type="date" name="date" value="{{ date }}">
+                <i class="fa fa-venus-mars icon"></i>
+                <label for="sexe"><b>sexe</b></label> <br>
+
+
+                {% if sexe %}
+                {% if sexe == "masculin" %}
+                <label for="masculin">Masculin</label>
+                <input type="radio" id="masculin" name="sexe" value="masculin" checked>
+                {% else %}
+                <label for="masculin">Masculin</label>
+                <input type="radio" id="masculin" name="sexe" value="masculin">
+                {% endif %}
+
+                {% if sexe == "feminin" %}
+                <label for="feminin">Féminin</label>
+                <input type="radio" id="feminin" name="sexe" value="feminin" checked>
+                {% else %}
+                <label for="feminin">Féminin</label>
+                <input type="radio" id="feminin" name="sexe" value="feminin">
+                {% endif %}
+                {% else %}
+                <!-- Cas où la variable sexe n'est pas définie -->
+                <label for="masculin">Masculin</label>
+                <input type="radio" id="masculin" name="sexe" value="masculin">
+                <label for="feminin">Féminin</label>
+                <input type="radio" id="feminin" name="sexe" value="feminin">
+                {% endif %}
+                <br> <br>
+                <i class="fa fa-address-card icon"></i>
+                <label for="adress"><b>Adresse</b></label>
+                <input type="text" placeholder="veuillez saisir votre adresse" name="adress" value="{{ adress }}">
+                <h2>choisissez votre role</h2>
+                {% if role %}
+                {% if role == "patient" %}
+                <label for="role_patient">Patient</label>
+                <input type="radio" id="role_patient" name="role" value="patient" checked>
+                {% else %}
+                <label for="role_patient">Patient</label>
+                <input type="radio" id="role_patient" name="role" value="patient">
+                {% endif %}
+                {% if role == "med" %}
+                <label for="role_med">Médecin</label>
+                <input type="radio" id="role_med" name="role" value="med" checked>
+                {% else %}
+                <label for="role_med">Médecin</label>
+                <input type="radio" id="role_med" name="role" value="med">
+                {% endif %}
+                {% if role == "pharma" %}
+                <label for="role_pharma">pharmacie</label>
+                <input type="radio" id="role_pharma" name="role" value="pharma" checked>
+                {% else %}
+                <label for="role_pharma">pharmacie</label>
+                <input type="radio" id="role_pharma" name="role" value="pharma">
+                {% endif %}
+                {% else %}
+                <!-- Cas où la variable role n'est pas définie -->
+                <label for="role_patient">Patient</label>
+                <input type="radio" id="role_patient" name="role" value="patient">
+                <label for="role_med">Médecin</label>
+                <input type="radio" id="role_med" name="role" value="med">
+                <label for="role_med">pharmacie</label>
+                <input type="radio" id="role_pharma" name="role" value="pharma">
+                {% endif %}
+                <br><br>
+                <div id="medecin_fields"
+                    class="{% if role == 'med' and not error_message %}visible{% else %}hidden{% endif %}">
+                    <i class="fa fa-stethoscope icon"></i>
+                    <label for="specialite"><b>Spécialité</b></label>
+                    <input type="text" id="specialite" name="specialite" placeholder="veuillez saisir votre spécialité"
+                        value="{{ specialite }}">
+                    <i class="fa fa-address-card icon"></i>
+                    <label for="adresse_cabinet"><b>Adresse du cabinet</b></label>
+                    <input type="text" id="adresse_cabinet" name="adresse_cabinet"
+                        placeholder="veuillez saisir l'adresse de votre cabinet" value="{{ adresse_cabinet }}">
+                </div>
+
+                <div id="pharma_fields"
+                    class="{% if role == 'pharma' and not error_message %}visible{% else %}hidden{% endif %}">
+                    <i class="fa fa-user icon"></i>
+                    <label for="nom_responsable"><b>Nom du Responsable</b></label>
+                    <input type="text" id="nom_responsable" name="nom_responsable"
+                        placeholder="veuillez saisir le nom du responsable" value="{{ nom_responsable }}">
+                    <i class="fa fa-clock-o"></i>
+                    <label for="heure_ouverture"><b>Heure d'ouverture</b></label>
+                    <input type="time" id="heure_ouverture" name="heure_ouverture" value="{{ heure_ouverture }}">
+                    <p>&nbsp;</p>
+                    <label for="heure_fermeture"><b>Heure de fermeture</b></label>
+                    <input type="time" id="heure_fermeture" name="heure_fermeture" value="{{ heure_fermeture }}">
+                </div>
+                <button type="submit" class="A1"
+                    style="width: 25%; justify-content: center; display: flex; align-items: center;">Soumettre</button>
+            </form>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var roleMed = document.getElementById('role_med');
+                var medecinFields = document.getElementById('medecin_fields');
+                var rolePharma = document.getElementById('pharma');
+                var pharmaFields = document.getElementById('pharma_fields');
+
+                function toggleFields() {
+                    medecinFields.style.display = roleMed.checked ? 'block' : 'none';
+                    pharmaFields.style.display = rolePharma.checked ? 'block' : 'none';
+                }
+
+                roleMed.addEventListener('change', toggleFields);
+                rolePharma.addEventListener('change', toggleFields);
+
+                toggleFields();  // Assurez-vous que les champs sont correctement affichés initialement
+            });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var roleMed = document.getElementById('role_med');
+                var medecinFields = document.getElementById('medecin_fields');
+                var rolePharma = document.getElementById('role_pharma');
+                var pharmaFields = document.getElementById('pharma_fields');
+                var rolePatient = document.getElementById('role_patient');
+
+                function toggleFields() {
+                    if (roleMed.checked) {
+                        medecinFields.style.display = 'block';
+                        pharmaFields.style.display = 'none';
+                    } else if (rolePharma.checked) {
+                        medecinFields.style.display = 'none';
+                        pharmaFields.style.display = 'block';
+                    } else if (rolePatient.checked) {
+                        medecinFields.style.display = 'none';
+                        pharmaFields.style.display = 'none';
+                    }
+                }
+
+                roleMed.addEventListener('change', toggleFields);
+                rolePharma.addEventListener('change', toggleFields);
+                rolePatient.addEventListener('change', toggleFields);
+
+                toggleFields();  // Assurez-vous que les champs sont correctement affichés initialement
+            });
+        </script
+</body>
+
+</html>

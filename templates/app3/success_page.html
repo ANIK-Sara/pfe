@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css'  %}">
+    <title>Document</title>
+</head>
+<body>
+    <div class="topnav">
+        <a class="active" href="http://127.0.0.1:8000/">Accueil</a>
+        <a href="#about">à propos de nous </a>
+        <a href="#contact">Contactez-nous</a>
+        <br>
+        <div class="language-select" style="margin-right:  300px;">
+            <select id="language" onchange="changeLanguage()">
+                <option value="fr">Français</option>
+                <option value="en">Anglais</option>
+                <option value="ar">Arabe</option>
+            </select>
+        </div>
+        <div class="search-container">
+            <form id="searchForm" method="post">
+                {% csrf_token %}
+                <input type="text" placeholder="Recherche.." name="search" style="width: 279px; margin-right: 100px;"> <br>
+                <!-- Assurez-vous que l'ID loginButton est correctement défini -->
+                <button id="loginButton" style="width:auto; background-color: #4CAF50;">Se connecter</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="id03" class="modal">
+        <form class="modal-content animate" method="post">
+            <div class="imgcontainer">
+                <span onclick="document.getElementById('id03').style.display='none'" class="close"
+                    title="Close Modal">&times;</span>
+                <img src="{% static 'image/member2.webp'  %}" alt="Avatar" class="avatar">
+            </div>
+            <div class="container" style="height: 150px;">
+                <i class="fa fa-user icon"></i>
+                <label for="uname"><b>Nom d'utilisateur</b></label>
+                <input type="text" placeholder="Entrez votre nom d'utilisateur" name="uname" required>
+                <i class="fa fa-key icon"></i>
+                <label for="psw"><b>Mot de passe</b></label>
+                <input type="password" placeholder="Entrez votre mot de passe" name="psw" required>
+                <button type="submit" class="essai" style="color: white; background-color: #4CAF50;">Se connecter</button>
+                <label><br> 
+                    <input type="checkbox" checked="checked" name="remember"> Se souvenir de moi 
+                </label>
+            </div>
+            <div class="container" style="background-color:#f1f1f1; text-align: center;">
+                <button type="button" onclick="document.getElementById('id03').style.display='none'" class="cancelbtn"
+                    style="float: left;  background-color: blueviolet;">Cancel</button>
+            </div>
+        </form>
+    </div> 
+
+    <h1>Inscription réussie</h1>
+    <p>Merci de vous être inscrit!</p>
+    <p>{{ message }}</p>
+
+    <script>
+        // Fonction pour afficher la fenêtre modale
+        function openModal() {
+            document.getElementById('id03').style.display = 'block';
+        }
+
+        // Attacher l'événement de soumission du formulaire
+        document.getElementById("searchForm").addEventListener("submit", function(event) {
+            // Empêcher le formulaire de se soumettre
+            event.preventDefault();
+            // Afficher la fenêtre modale
+            openModal();
+        });
+
+        // Fonction pour changer de langue
+        function changeLanguage() {
+            var selectedLanguage = document.getElementById('language').value;
+            window.location.href = '/' + selectedLanguage + '/';
+        }
+    </script>
+</body> 
+</html>

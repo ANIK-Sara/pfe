@@ -1,0 +1,16 @@
+<div class="row">
+    {% for produit in product_objectt %}
+        <div class="col-md-3">
+            <div class="card">
+                <img src="{{ produit.image }}" alt="" class="card-img-top">
+                <div class="card-body">
+                    <div class="card-title" id="aaa{{produit.id_produit}}">{{ produit.nom_pr }}</div>
+                    <div class="card-text" id="prixunitaire{{produit.id_produit}}" style="color: blue;">{{ produit.prix_unitaire }}</div>
+                    <a href="{% url 'details' produit.id_produit %}" class="btn btn-warning">Voir détails</a>
+                    <!-- Autres actions pour les produits -->
+                    <button id="b{{produit.id_produit}}" class="btn ted btn-success">Ajouter</button>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

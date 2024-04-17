@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css'  %} ">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-BwyHu9AUVZ63n0a91aW1rD38I7L1sWkK5BYS75zVugJuzqG+Ei9hBHn9QkIo/gBExQTHvJikjMjJIq7qMtkr3w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Détails du médecin</title>
+    <style>
+        input{
+            width: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="topnav" style="display: flex; align-items: center;">
+        <a class="active" href="#home" style="margin-left: 20px;">Accueil</a>
+        <a href="#about" style="margin-left: 20px;">À propos de nous</a>
+        <a href="#contact" style="margin-left: 20px;">Contactez-nous</a>
+        <div class="language-select" style="margin-right: 30px;">
+            <select id="language" onchange="changeLanguage()">
+                <option value="fr">Français</option>
+                <option value="en">Anglais</option>
+                <option value="ar">Arabe</option>
+            </select>
+        </div>
+    </div>
+    <h1 style="color: blue;  text-align: center;">Détails sur le médecin</h1>
+    
+    <div class="details" style="margin-left: 10px;">
+        <div style="display: flex; flex-wrap: wrap;">
+            <div style="flex: 0 0 calc(50% - 5px); margin-right: 10px;">
+                <label for="nom_medecin"><b>Nom:</b></label><br>
+                <input type="text" id="nom_medecin" value="{{ medecin.nom_medecin }}" readonly style="width: 90%;">
+            </div>
+            <div style="flex: 0 0 calc(50% - 5px);">
+                <label for="prenom_medecin"><b>Prénom:</b></label><br>
+                <input type="text" id="prenom_medecin" value="{{ medecin.prenom_medecin }}" readonly style="width: 90%;">
+            </div>
+        </div>
+        <div style="display: flex; flex-wrap: wrap;">
+            <div style="flex: 0 0 calc(50% - 5px); margin-right: 10px;">
+                <label for="specialite"><b>Spécialité:</b></label><br>
+                <input type="text" id="specialite" value="{{ medecin.specialite }}" readonly style="width: 90%;">
+            </div>
+            <div style="flex: 0 0 calc(50% - 5px);">
+                <label for="num_telM"><b>Numéro de téléphone:</b></label><br>
+                <input type="text" id="num_telM" value="{{ medecin.num_telM }}" readonly style="width: 90%;">
+            </div>
+        </div>
+        <div style="display: flex; flex-wrap: wrap;">
+            <div style="flex: 0 0 calc(50% - 5px); margin-right: 10px;">
+                <label for="adr_mailM"><b>Adresse e-mail:</b></label><br>
+                <input type="text" id="adr_mailM" value="{{ medecin.adr_mailM }}" readonly style="width: 90%;">
+            </div>
+            <div style="flex: 0 0 calc(50% - 5px);">
+                <label for="adresse_cabinet"><b>Adresse du cabinet:</b></label><br>
+                <input type="text" id="adresse_cabinet" value="{{ medecin.adresse_cabinet }}" readonly style="width: 90%;">
+            </div>
+        </div>
+        <div style="display: flex; flex-wrap: wrap;">
+            <div style="flex: 0 0 calc(50% - 5px); margin-right: 10px;">
+                <label for="date"><b>Date:</b></label><br>
+                <input type="text" id="date" value="{{ medecin.date }}" readonly style="width: 90%;">
+            </div>
+            <div style="flex: 0 0 calc(50% - 5px);">
+                <label for="sexe"><b>Sexe:</b></label><br>
+                <input type="text" id="sexe" value="{{ medecin.sexe }}" readonly style="width: 90%;">
+            </div>
+        </div>
+    </div>
+    <!-- Ajoutez d'autres détails du médecin selon vos besoins -->
+    <br><br><br><br><br><br>
+{% include 'app3/footer.html' %}
+</body>
+</html>

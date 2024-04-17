@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css'  %} ">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+
+<body>
+
+
+    <div class="topnav" style="display: flex; justify-content: space-between;">
+	
+        <div>
+            <a class="" href="#home">Accueil</a>
+            <a href="#about" style="margin-left: 20px;">à propos de nous</a>
+            <a href="#contact" style="margin-left: 20px;">Contactez-nous</a>
+        </div> 
+		
+		
+        <div class="language-select" style="margin-left: 20px; margin-top: 15px; margin-right: 170px;">
+            <select id="language" onchange="changeLanguage()">
+                <option value="fr">Français</option>
+                <option value="en">Anglais</option>
+                <option value="ar">Arabe</option>
+            </select>
+        </div>
+		
+		
+        <div style="display: flex; align-items: center;">
+            <div class="search-container" style="margin-right: 20px;">
+                <form action="/action_page.php">
+                    <input type="text" placeholder="Recherche.." name="search" style="width: 300px;">
+                </form>
+            </div>
+            <button onclick="document.getElementById('id01').style.display='block'"
+                style="background-color: blue; color: white; margin-right: 50px;">Se connecter</button>
+                
+            </div>
+        </div>
+    
+    <h2>Page d'acueil </h2>
+
+
+    <div id="id01" class="modal">
+
+        <form class="modal-content animate" method="post" action="{% url 'connexion' %}">
+            {% csrf_token %}
+
+
+            <div class="container" style="height: 225px;">
+                <div style="float: left; width: 50%; background-color: white;">
+                    <h1 style="text-align: center; color: blue;"> Bienvenue </h1> <br>
+                    <i class="fa fa-user icon"></i>
+                    <label for="uname"><b style="color: black;">Nom d'utilisateur</b></label> <br>
+                    <input type="text" placeholder="Entrez votre nom d'utilisateur" name="uname" required
+                    style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;
+                           margin-bottom: 10px; background-color: white;">
+                 
+
+                   
+            
+                    <label for="psw"><b style="color: black;">Mot de passe </b></label> <br>
+                    <input type="password" placeholder="Entrez votre mot de passe" name="psw" required
+                    style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;
+                           margin-bottom: 10px; background-color: white;">
+                        <!-- Affiche les erreurs de formulaire générales -->
+            
+                    <button type="submit" class="essai" style="color: white; background-color: blue; 
+                    cursor: pointer;">Se connecter </button>
+                    <label> <br>
+                        <input type="checkbox" checked="checked" name="remember"> Se souvenir de moi
+                    </label> <br> <br>
+                </div>
+                <!-- Ajout de l'image -->
+                <div style="float: right; width: 50%;">
+                    <img src="{% static 'image/member2.webp'  %}" alt="Avatar" class="avatar" style="width: 100%; height: 100%;">
+                </div>
+            </div>
+        
+            <div class="container" style="background-color:white; text-align: center;">
+                <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn"
+                    style="float: left; background-color:  #008B8B;">Cancel</button>
+                </form>
+                <span style="float: right;"> <a href="#"
+                        onclick="document.getElementById('id02').style.display='block'" style="color: #008b8b; ;"> <b>S'inscrire</b> </a></span>
+            </div>
+
+        
+
+            <div id="id02" class="modal" style="background-color:white ;">
+                <form class="modal-content animate" method="post" action="{% url 'inscription' %}">
+                    {% csrf_token %}
+
+                    <div class="imgcontainer">
+                        <span onclick="document.getElementById('id02').style.display='none'" class="close"
+                            title="Close Modal">&times;</span>
+
+
+
+                    </div>
+
+
+
+
+                    <div class="container">
+                        <div class="topnav" style="position: absolute; top: 0; left:0 ; width: 100%;">
+                            <a class="" href="http://127.0.0.1:8000/">Accueil</a>
+                            <a href="#about" style="margin-left:  100px;">à propos de nous </a>
+                            <a href="#contact" style="margin-left:  100px;">Contactez-nous </a>
+                            <br>
+                            <div class="language-select" style="margin-left:  1000px;">
+                                <select id="language" onchange="changeLanguage()">
+                                    <option value="fr">Français</option>
+                                    <option value="en">Anglais</option>
+                                    <option value="ar">Arabe</option>
+                                </select>
+                            </div>
+
+                          
+                        </div>
+                        <br> <br>
+                        <h1 style="text-align: center; color: blue;">Formulaire d'inscription</h1>
+                        <i class="fa fa-user icon"></i>
+                        <label for="nom"><b>Nom d'utilisateur </b></label>
+                        <input type="text" placeholder="veuillez saisir votre nom  " name="nom">
+                        <i class="fa fa-user icon"></i>
+                        <label for="prenom"><b>Prénom d'utilisateur </b></label>
+                        <input type="text" placeholder="veuillez saisir votre prénom  " name="prenom">
+                        <i class="fa fa-key icon"></i>
+                        <label for="psww"><b> Mot de passe</b></label>
+
+                        <input type="password" placeholder="veuillez saisir votre mot de passe " name="psww">
+                        <i class="fa fa-envelope icon"></i>
+                        <label for="mail"><b>Adresse mail </b></label> <br>
+                        <input type="text" placeholder="veuillez saisir l'adresse mail " name="mail"> <br>
+                        <i class="fa fa-phone icon"></i>
+
+                        <label for="tel"><b>Numéro de téléphone </b></label>
+                        <input type="text" placeholder="veuillez saisir votre numéro de téléphone " name="tel">
+                        <i class="fa fa-calendar icon"></i>
+
+                        <label for="date"><b>Date de naissance </b></label>
+                        <input type="date" name="date">
+                        <i class="fa fa-venus-mars icon"></i>
+
+                        <label for="sexe"><b>sexe</b></label> <br>
+                        <label for="feminin">Féminin</label>
+                        <input type="radio" id="feminin" name="sexe" value="feminin">
+                        <label for="masculin">Masculin</label>
+                        <input type="radio" id="masculin" name="sexe" value="masculin"> <br> <br>
+                        <i class="fa fa-address-card icon"></i>
+
+                        <label for="adress"><b>Adresse </b></label>
+                        <input type="text" placeholder="veuillez saisir votre adresse " name="adress">
+                        <h2>choisissez votre role</h2>
+                        <label for="role_patient">Patient</label>
+                        <input type="radio" id="role_patient" name="role" value="patient">
+                        <label for="role_med">Médecin</label>
+                        <input type="radio" id="role_med" name="role" value="med">
+                        <label for="pharma">pharmacie</label>
+                        <input type="radio" id="pharma" name="role" value="pharma"> <br> <br>
+
+                        <div id="medecin_fields" style="display: none;">
+                            <i class="fa fa-stethoscope icon"></i>
+
+                            <label for="specialite"><b>Spécialité</b></label>
+                            <input type="text" id="specialite" name="specialite"
+                                placeholder="veuillez saisir votre spécialité ">
+                            <i class="fa fa-address-card icon"></i>
+                            <label for="adresse_cabinet"><b>Adresse du cabinet</b></label>
+                            <input type="text" id="adresse_cabinet" name="adresse_cabinet"
+                                placeholder="veuillez saisir l'adresse de votre cabinet ">
+                                <label for="avatar2"><b>Veuilllez ajouter une photo de votre signature </b></label><br> <br>
+                                <input type="file" id="avatar2" name="avatar">
+                        </div>
+
+                        <!-- Autres champs de formulaire et bouton de soumission -->
+
+                <!-- Votre script JavaScript pour afficher/cacher la div en fonction du rôle -->
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        var roleMed = document.getElementById('role_med');
+                        var medecinFields = document.getElementById('medecin_fields');
+
+                        roleMed.addEventListener('change', function () {
+                            medecinFields.style.display = roleMed.checked ? 'block' : 'none';
+                        });
+                    });
+                </script>
+                <div id="pharma_fields" style="display: none;">
+                    <i class="fa fa-user icon"></i>
+                    <label for="nom_responsable"><b>Nom du Responsable</b></label>
+                    <input type="text" id="nom_responsable" name="nom_responsable"
+                        placeholder="veuillez saisir le nom du responsable ">
+                    <i class="fa fa-clock-o"></i>
+                    <label for="heure_ouverture"><b>Heure d'ouverture</b></label>
+
+                    <input type="time" id="heure_ouverture" name="heure_ouverture">
+                    <p>&nbsp;</p>
+
+                    <i class="fa fa-clock-o"></i>
+                    <label for="heure_fermeture"><b>Heure de fermeture</b></label>
+                    <input type="time" id="heure_fermeture" name="heure_fermeture"> <br><br>
+                    <label for="avatar"><b>Veuilllez ajouter une photo de votre pharmacie </b></label><br> <br>
+<input type="file" id="avatar" name="avatar">
+                    <br> <br>
+                </div>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        var rolePharma = document.getElementById('pharma');
+                        var pharmaFields = document.getElementById('pharma_fields');
+
+                        rolePharma.addEventListener('change', function () {
+                            pharmaFields.style.display = rolePharma.checked ? 'block' : 'none';
+                        });
+                    });
+                </script>
+
+                <button type="submit" class="A1"
+                    style="width: 25%; justify-content: center; display: flex; align-items: center;">Soumettre</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var imgArea = document.querySelector('.img-area');
+            var images = document.querySelectorAll('.img-area img');
+
+            var currentImageIndex = 0;
+
+            function changeImage() {
+                images[currentImageIndex].style.opacity = 0;
+                currentImageIndex = (currentImageIndex + 1) % images.length;
+                images[currentImageIndex].style.opacity = 1;
+            }
+
+            setInterval(changeImage, 3000); // Change image every 3 seconds
+        });
+    </script>
+
+    <script>
+        function changeLanguage() {
+            var selectedLanguage = document.getElementById('language').value;
+            // Supprimez la ligne d'alerte si vous n'avez pas besoin d'une notification
+            // alert('Langue choisie: ' + selectedLanguage);
+
+            // Ici, le code pour changer la langue de la page
+            // Cette ligne redirige l'utilisateur vers la version de la page dans la langue choisie
+            window.location.href = '/' + selectedLanguage + '/';
+        }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var roleMed = document.getElementById('role_med');
+            var medecinFields = document.getElementById('medecin_fields');
+            var rolePharma = document.getElementById('pharma');
+            var pharmaFields = document.getElementById('pharma_fields');
+            var rolePatient = document.getElementById('role_patient');
+
+            roleMed.addEventListener('change', function () {
+                if (roleMed.checked) {
+                    medecinFields.style.display = 'block';
+                    pharmaFields.style.display = 'none';
+                }
+            });
+
+            rolePharma.addEventListener('change', function () {
+                if (rolePharma.checked) {
+                    medecinFields.style.display = 'none';
+                    pharmaFields.style.display = 'block';
+                }
+            });
+
+            rolePatient.addEventListener('change', function () {
+                if (rolePatient.checked) {
+                    medecinFields.style.display = 'none';
+                    pharmaFields.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+    {% if error_message %}
+    <p>{{ error_message }}</p>
+    {% endif %}
+
+
+
+
+
+   
+</body>
+
+</html>
+

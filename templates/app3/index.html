@@ -1,0 +1,118 @@
+{%  extends "app3/base.html" %}
+
+{% block content  %}
+
+<div class="row">
+    <div class="col-md-12">
+    <form class="card card-sm">
+        <div class="card-body row no-gutters align-items-center">
+            <div class="col">
+<input type="search" name="item-name"  class="form-control form-control-borderless" placeholder="Entrer le nom du produit que vous voulez chercher " >
+             </div>
+             <div class="col-auto">
+                <button type="submit" class="btn btn-success" style="width: 110px;" >Recherche</button>
+             </div>
+        </div>
+    </form>
+</div>
+</div>
+<div class="row">
+    {% for product in product_object   %}
+    <div class="col-md-3">
+        <div class="card" >
+        <img src="{{ product.image  }}" alt="" class="card-ing-top">
+        <div class="card-body">
+            <div id="aa{{product.id_produit}}"   class="card-title">{{ product.nom_pr }}</div>
+            <div id="prix_unitaire{{product.id_produit}}"   class="card-text" style="color: blue;">{{ product.prix_unitaire  }} DA</div>
+    
+            <a href="{% url 'details' product.id_produit %}" class="btn btn-warning"  >Voir détails</a>
+
+            
+            <button id="{{product.id_produit}}"   class="btn ted btn-success">J'achète <i class="bi bi-cart-fill"></i></button>
+        </div>
+    </div> 
+</div>
+{% endfor   %}
+</div>
+<div class="row mt-3">
+    <div class="col-md-3 offset-md-4">
+        <ul class="pagination">
+            {% if product_object.has_previous %}
+            <li class="page-item">
+                <a  class="page-link"  href="?page={{ product_object.previous_page_number }}">Précédent</a>
+            </li>
+            {% endif %}
+            <li class="page-item active">
+                <a  class="page-link" href="?page={{ product_object.number }}">{{ product_object.number }}</a>
+            </li>
+            {% if product_object.has_next %}
+            <li class="page-item">
+                <a class="page-link"   href="?page={{ product_object.next_page_number }}">Suivant</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</div> <br><br><br><br>
+{% include 'app3/footer.html' %}
+
+{% endblock %}
+{%  block js  %}
+<script type="text/javascript">
+
+console.log('Juste pour tester ');
+if (localStorage.getItem('panier') == null ){
+    var panier = {} ; 
+
+}else{
+    panier = JSON.parse(localStorage.getItem('panier'));
+}
+$(document).on('click', '.ted' , function(){
+    console.log('ajouter');
+    var item_id = this.id.toString();
+    console.log(item_id) ;
+    if (panier[item_id] != undefined) {
+        quantité = panier[item_id][0]+1 ;
+        panier[item_id][0] = quantité ; 
+        panier[item_id][2] += parseFloat(document.getElementById("prix_unitaire"+item_id).innerHTML);
+        
+
+    }else{
+        quantité = 1;
+        prix = parseFloat(document.getElementById("prix_unitaire"+item_id).innerHTML);
+        nom = document.getElementById("aa"+item_id).innerHTML  ;
+        panier[item_id] = [quantité , nom, prix] ;
+    }
+    console.log(panier);
+    localStorage.setItem('panier' , JSON.stringify(panier));
+    document.getElementById("panier").innerHTML = "<h3> <b>Panier(" + Object.keys(panier).length + ") <span style='margin-left: 5px;'><i class='bi bi-cart-fill'></i></span> </b></h3>";
+
+    console.log(Object.keys(panier).length);
+});
+AfficherList(panier)
+
+function AfficherList(panier) {
+    var panierString = "";
+    panierString += "<h5> Voici votre liste </h5>";
+    var index = 1;
+    for (var x in panier) {
+        panierString += index;
+        var element = document.getElementById("aa" + x);
+        if (element) { // Vérification si l'élément existe
+            panierString += element.innerHTML + " Qte " + panier[x][0] + "<br>";
+        }
+        index += 1;
+    }
+    panierString += " <br> <a href='/checkout' class='btn btn-primary'>Afficher</a>";
+    $('[data-toggle="popover"]').popover();
+    document.getElementById('panier').setAttribute('data-content', panierString);
+}
+
+
+
+
+</script>
+
+
+
+
+{%  endblock    %}
